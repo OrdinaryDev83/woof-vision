@@ -1,16 +1,25 @@
+import os
+# Disable TensorFlow warnings and errors
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # or any {'0', '1', '2'}
+
 from flask import Flask, request
 import tensorflow as tf
 import tensorflow_datasets as tfds
 import numpy as np
 import json
 from utils import base64_to_tensor, prepro
-import os
 import gdown
+
+# Create the Flask app
+app = Flask("Woof Vision")
+print("[WOOFVISION] App created")
 
 api_dir = os.path.join(os.path.dirname(__file__), "..")
 
 # Fetch the dataset from the TensorFlow Datasets Catalog
+print("[WOOFVISION] Fetching the dataset ...")
 ds_both, ds_info = tfds.load("stanford_dogs", as_supervised=False, with_info=True)
+print("[WOOFVISION] Dataset fetched")
 
 # Get the class names from the dataset info
 classes = ds_info.features["label"].names
@@ -26,54 +35,70 @@ model_path = os.path.join(api_dir, "model/model_no_augm.h5")
 
 # Download the model from Google Drive (1.1Gb)
 if not os.path.exists(model_path):
+    print("[WOOFVISION] Model not found, downloading it ...")
     url = "https://drive.google.com/uc?id=1tIPCklNqihzPTR4OrnACPDQRBu3Eb9zJ" #os.getenv("MODEL_URL")
     output = model_path
     gdown.download(url, output, quiet=False)
+    print("[WOOFVISION] Model downloaded")
+else:
+    print("[WOOFVISION] Model already downloaded")
 
 # Load the TensorFlow model and compile it for performance
-model = tf.keras.models.load_model(model_path, compile=True)
-
-# Create the Flask app
-app = Flask("Woof Vision")
-
+print("[WOOFVISION] Loading model ...")
+model = tf.keras.models.load_model(model_path)
+print("[WOOFVISION] Model loaded")
+print("[WOOFVISION] Listening ...")
 
 # Define the route for the prediction
 @app.route("/predict", methods=["POST"])
 def predict():
     """Make a prediction with the model"""
-    print(request.json[:100])
+    print("[WOOFVISION] [REQUEST]", str(request.json)[:100], "...")
 
     # Get the image in base64 from the JSON of the POST request
+    if request.json is None or "image" not in request.json:
+        return "No image in the request", 400
     data = request.json["image"]
 
-    # Convert the base64 string to a TensorFlow tensor (image)
-    image = base64_to_tensor(data)
+    try:
+        # Convert the base64 string to a TensorFlow tensor (image)
+        image = base64_to_tensor(data)
+        
+        # Preprocess the image
+        image = prepro(image)
 
-    # Preprocess the image
-    image = prepro(image)
+        # Add a batch dimension
+        image = np.reshape(image, [1, *image.shape])
+    except Exception as error:
+        print("[WOOFVISION]", error)
+        return "Invalid image", 400
 
-    # Add a batch dimension
-    image = np.reshape(image, [1, *image.shape])
+    try:
+        # Make a prediction with the model
+        prediction = model.predict(image)[0]
 
-    # Make a prediction with the model
-    prediction = model.predict(image)[0]
+        # Get the 3 best matches my matching the prediction with the classes
+        hashmap = {}
+        for i, key in enumerate(classes):
+            hashmap[key] = prediction[i]
+        matches = dict(sorted(hashmap.items(), key=lambda x: -x[1])[:3])
 
-    # Get the 3 best matches my matching the prediction with the classes
-    hashmap = {}
-    for i, key in enumerate(classes):
-        hashmap[key] = prediction[i]
-    matches = dict(sorted(hashmap.items(), key=lambda x: -x[1])[:3])
+        body = {"prediction": matches}
 
-    body = {"prediction": matches}
+        print("[WOOFVISION] [RESPONSE]", str(body))
 
-    # Return the prediction as a JSON
-    response = app.response_class(
-        response=json.dumps(str(body)), status=200, mimetype="application/json"
-    )
+        # Return the prediction as a JSON
+        response = app.response_class(
+            response=json.dumps(str(body)), status=200, mimetype="application/json"
+        )
 
-    return response
+        return response
+    except Exception as error:
+        print("[WOOFVISION]", error)
+        return "Error while making the prediction", 500
 
 
 # Run the app
 if __name__ == "__main__":
-    app.run(debug=True)
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=5000)
