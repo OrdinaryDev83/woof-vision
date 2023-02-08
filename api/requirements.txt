@@ -1,6 +1,6 @@
-Flask==2.2.2
-gdown==4.6.0
-numpy==1.24.2
-tensorflow==2.11.0
-tensorflow_datasets==4.8.2
-vit_keras==0.1.0
+Flask
+gdown
+numpy
+tensorflow
+tensorflow_datasets
+vit_keras
