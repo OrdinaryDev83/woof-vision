@@ -5,6 +5,7 @@ import numpy as np
 import json
 from utils import base64_to_tensor, prepro
 import os
+import gdown
 
 api_dir = os.path.join(os.path.dirname(__file__), "..")
 
@@ -20,10 +21,17 @@ classes = ["-".join(c.split("-")[1:]) for c in classes]
 # Number of classes
 n_classes = len(classes)
 
+# Path to the model
+model_path = os.path.join(api_dir, "model/model_no_augm.h5")
+
+# Download the model from Google Drive (1.1Gb)
+if not os.path.exists(model_path):
+    url = "https://drive.google.com/uc?id=1tIPCklNqihzPTR4OrnACPDQRBu3Eb9zJ" #os.getenv("MODEL_URL")
+    output = model_path
+    gdown.download(url, output, quiet=False)
+
 # Load the TensorFlow model and compile it for performance
-model = tf.keras.models.load_model(
-    os.path.join(api_dir, "model/model_no_augm.h5"), compile=True
-)
+model = tf.keras.models.load_model(model_path, compile=True)
 
 # Create the Flask app
 app = Flask("Woof Vision")
@@ -33,6 +41,7 @@ app = Flask("Woof Vision")
 @app.route("/predict", methods=["POST"])
 def predict():
     """Make a prediction with the model"""
+    print(request.json[:100])
 
     # Get the image in base64 from the JSON of the POST request
     data = request.json["image"]
