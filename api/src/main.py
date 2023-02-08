@@ -36,7 +36,7 @@ model_path = os.path.join(api_dir, "model/model_no_augm.h5")
 # Download the model from Google Drive (1.1Gb)
 if not os.path.exists(model_path):
     print("[WOOFVISION] Model not found, downloading it ...")
-    url = "https://drive.google.com/uc?id=1tIPCklNqihzPTR4OrnACPDQRBu3Eb9zJ" #os.getenv("MODEL_URL")
+    url = str(os.getenv("MODEL_URL"))
     output = model_path
     gdown.download(url, output, quiet=False)
     print("[WOOFVISION] Model downloaded")
