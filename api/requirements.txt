@@ -5,3 +5,4 @@ tensorflow
 tensorflow_datasets
 tensorflow_addons
 vit_keras
+opencv-python
