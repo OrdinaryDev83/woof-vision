@@ -9,6 +9,7 @@ import numpy as np
 import json
 from utils import base64_to_tensor, prepro
 import gdown
+from flask import jsonify
 
 # Create the Flask app
 app = Flask("Woof Vision")
@@ -58,7 +59,8 @@ def predict():
     # Get the image in base64 from the JSON of the POST request
     if request.json is None or "image" not in request.json:
         return "No image in the request", 400
-    data = request.json["image"]
+    data = request.json["image"].split(",")[1]
+    print("[WOOFVISION] [IMAGE]", data[:100], "...")
 
     try:
         # Convert the base64 string to a TensorFlow tensor (image)
@@ -83,16 +85,15 @@ def predict():
             hashmap[key] = prediction[i]
         matches = dict(sorted(hashmap.items(), key=lambda x: -x[1])[:3])
 
-        body = {"prediction": matches}
+        # convert float32 to float
+        for k, v in matches.items():
+            matches[k] = float(v)
+            
+        body = { "prediction" : matches }
 
         print("[WOOFVISION] [RESPONSE]", str(body))
 
-        # Return the prediction as a JSON
-        response = app.response_class(
-            response=json.dumps(str(body)), status=200, mimetype="application/json"
-        )
-
-        return response
+        return jsonify(body)
     except Exception as error:
         print("[WOOFVISION]", error)
         return "Error while making the prediction", 500
