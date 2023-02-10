@@ -2,7 +2,6 @@ from vit_keras import vit
 import base64
 import tensorflow as tf
 
-
 def prepro(img):
     """Preprocess the image to be compatible with the model"""
     img = tf.cast(img, dtype=tf.float32)

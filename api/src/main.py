@@ -6,13 +6,13 @@ from flask import Flask, request
 import tensorflow as tf
 import tensorflow_datasets as tfds
 import numpy as np
-import json
-from utils import base64_to_tensor, prepro
-import gdown
+from .utils import base64_to_tensor, prepro
 from flask import jsonify
+from .install.install_model import download as download_model
 
 # Create the Flask app
-app = Flask("Woof Vision")
+app = Flask(__name__)
+
 print("[WOOFVISION] App created")
 
 api_dir = os.path.join(os.path.dirname(__file__), "..")
@@ -32,17 +32,11 @@ classes = ["-".join(c.split("-")[1:]) for c in classes]
 n_classes = len(classes)
 
 # Path to the model
-model_path = os.path.join(api_dir, "model/model_no_augm.h5")
+model_dir = os.path.join(api_dir, "model")
+model_path = os.path.join(model_dir, "model_no_augm.h5")
 
 # Download the model from Google Drive (1.1Gb)
-if not os.path.exists(model_path):
-    print("[WOOFVISION] Model not found, downloading it ...")
-    url = str(os.getenv("MODEL_URL"))
-    output = model_path
-    gdown.download(url, output, quiet=False)
-    print("[WOOFVISION] Model downloaded")
-else:
-    print("[WOOFVISION] Model already downloaded")
+download_model()
 
 # Load the TensorFlow model and compile it for performance
 print("[WOOFVISION] Loading model ...")
@@ -59,7 +53,8 @@ def predict():
     # Get the image in base64 from the JSON of the POST request
     if request.json is None or "image" not in request.json:
         return "No image in the request", 400
-    data = request.json["image"].split(",")[1]
+    split = request.json["image"].split(",")
+    data = split[min(1, len(split) - 1)]
     print("[WOOFVISION] [IMAGE]", data[:100], "...")
 
     try:
