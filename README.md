@@ -7,6 +7,12 @@ This project was created as a demonstration of the skills and knowledge gained d
 # App Look Disclaimer
 As a new React Native developer, the app is kept simple and basic, with a focus on the functionality of the computer vision model. Despite its rough appearance, the project provides a solid foundation for future improvements and developments in the field of computer vision and machine learning.
 
+# Model Statistics
+<insert graphs and data>
+
+# Gallery
+<insert photos and gifs>
+
 # Structure
 The structure of the project is the following :
  - App : mobile React Native app using Expo
