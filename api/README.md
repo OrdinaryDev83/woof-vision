@@ -4,6 +4,7 @@ This is the API part of the project, which contains :
  - Automatic Model Download
 
 *Make sure your pwd is /api*
+
 Build Docker Image :
 ```
 docker build -f Dockerfile -t woof-vision-api .
