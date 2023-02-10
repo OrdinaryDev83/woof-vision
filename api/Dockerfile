@@ -2,7 +2,7 @@ FROM tensorflow/tensorflow:2.10.0
 
 # install python 3
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y python3 python3-pip ffmpeg libsm6 libxext6 \
+    && apt-get install -y python3 python3-pip ffmpeg libsm6 libxext6 \
     && rm -rf /var/lib/apt/lists/*
 
 EXPOSE 5000
@@ -24,8 +24,10 @@ ENV MODEL_URL=https://drive.google.com/uc?id=1tIPCklNqihzPTR4OrnACPDQRBu3Eb9zJ
 ADD src/install/install_model.py /api/src/install/install_model.py
 RUN python3 src/install/install_model.py
 
+RUN pip install pyyaml h5py
+
 ## Run the app
 
 COPY . ./
 
-CMD ["python3", "-m", "src.main"]
+ENTRYPOINT ["python3", "-m", "src.main"]

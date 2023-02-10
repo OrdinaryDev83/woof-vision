@@ -1,6 +1,6 @@
 import os
 # Disable TensorFlow warnings and errors
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # or any {'0', '1', '2'}
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # or any {'0', '1', '2'}
 
 from flask import Flask, request
 import tensorflow as tf

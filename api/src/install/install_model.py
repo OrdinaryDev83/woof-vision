@@ -2,7 +2,7 @@ import gdown
 import os
 
 def download():
-
+    # Called from main.py
     api_dir = os.path.join(os.path.dirname(__file__), "..", "..")
 
     # Path to the model
