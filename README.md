@@ -5,7 +5,7 @@ Woof Vision is a cutting-edge computer vision project that uses the state-of-the
 This project was created as a demonstration of the skills and knowledge gained during an internship in machine learning. The repository includes a Jupyter Notebook that explains the training process in detail, providing a deeper understanding of the model. It also showcases the usage of data augmentation, transfer learning and other techniques.
 
 # App Look Disclaimer
-As a new React Native developer, the app is kept simple and basic, with a focus on the functionality of the computer vision model. Despite its rough appearance, the project provides a solid foundation for future improvements and developments in the field of computer vision and machine learning.
+As I am new to React Native, the app is kept simple and basic, with a focus on the functionality of the computer vision model. Despite its rough appearance, the project provides a solid foundation for future improvements and developments in the field of computer vision and machine learning.
 
 # Model Statistics
 <insert graphs and data>
