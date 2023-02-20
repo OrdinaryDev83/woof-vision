@@ -30,4 +30,4 @@ RUN pip install pyyaml h5py
 
 COPY . ./
 
-ENTRYPOINT ["python3", "-m", "src.main"]
+ENTRYPOINT ["python3", "-m", "src.app"]
