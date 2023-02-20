@@ -12,6 +12,23 @@ Tags : Python, JavaScript, TensorFlow, React Native, Flask, Keras, Jupyter Noteb
 # Why
 This project was created as a demonstration of the skills and knowledge gained during an internship in Machine Learning.
 
+# Structure
+The structure of the project is the following :
+ - App : mobile React Native app using Expo
+ - API : flask web API using Docker
+ - Model : training process on Tensorflow using Jupyter Notebook
+
+# Gallery
+
+## Mobile Application
+![Demo](imgs/demo.webp)
+![Screen1](imgs/screen1.jpg)
+![Screen2](imgs/screen2.jpg)
+![Screen3](imgs/screen3.jpg)
+
+## Web API
+![API](imgs/api.png)
+
 # App Look Disclaimer
 As I am new to React Native, the app is kept simple and basic, with a focus on the functionality of the Computer Vision model. Despite its rough appearance, the project provides a solid foundation for future improvements and developments.
 
@@ -19,18 +36,3 @@ As I am new to React Native, the app is kept simple and basic, with a focus on t
 The model was able to get to a 92.3% validation accuracy with 0.2835 loss as sparse categorical cross entropy. Each step took ~310s to train (94*128 images).
 
 ![Confusion Matrix](imgs/cm.png)
-
-# Gallery
-## Mobile Application
-![Demo](imgs/demo.webp)
-![Screen1](imgs/screen1.jpg)
-![Screen2](imgs/screen2.jpg)
-![Screen3](imgs/screen3.jpg)
-## Web API
-![API](imgs/api.png)
-
-# Structure
-The structure of the project is the following :
- - App : mobile React Native app using Expo
- - API : flask web API using Docker
- - Model : training process on Tensorflow using Jupyter Notebook
