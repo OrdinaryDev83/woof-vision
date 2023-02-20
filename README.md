@@ -21,10 +21,13 @@ The model was able to get to a 92.3% validation accuracy with 0.2835 loss as spa
 ![Confusion Matrix](imgs/cm.png)
 
 # Gallery
+## Mobile Application
 ![Demo](imgs/demo.webp)
 ![Screen1](imgs/screen1.jpg)
 ![Screen2](imgs/screen2.jpg)
 ![Screen3](imgs/screen3.jpg)
+## Web API
+![API](imgs/api.png)
 
 # Structure
 The structure of the project is the following :
