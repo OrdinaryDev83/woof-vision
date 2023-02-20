@@ -1,6 +1,10 @@
 # Woof Vision
 Woof Vision is a computer vision project that uses the **ViT L32 transformer model** to recognize up to **120 different dog breeds** from a single photo. This project showcases the transfer learning capabilities of TensorFlow and the power of using advanced algorithms in Computer Vision.
 
+```
+Tags : Python, JavaScript, TensorFlow, React Native, Flask, Keras, Jupyter Notebook
+```
+
  * The mobile app is built using React Native, while the backend is powered by Flask.
 
  * The repository includes a Jupyter Notebook that explains the training process in detail, providing a deeper understanding of the model. It also showcases the usage of data augmentation, transfer learning and other techniques.
